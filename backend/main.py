@@ -65,7 +65,7 @@ def get_news():
     url = "https://newsapi.org/v2/everything"
 
     params = {
-        "q": "(finance OR banking OR economy OR investment OR stock market OR business OR inflation OR interest rates)",
+        "q": "(finance OR banking OR economy OR investment OR stocks OR inflation OR \"interest rates\" OR \"financial markets\" OR \"central bank\" OR \"economic policy\")",
         "language": "en",
         "sortBy": "publishedAt",
         "pageSize": 10,
@@ -83,6 +83,7 @@ def get_news():
     data = response.json()
 
     articles = []
+    
     conn = sqlite3.connect(DB_NAME)
 
     financial_keywords = [
@@ -95,10 +96,11 @@ def get_news():
     for article in data.get("articles", []):
         text = (article.get("title") or "") + " " + (article.get("description") or "")
 
-       
-
         if not any(keyword in text.lower() for keyword in financial_keywords):
             continue
+
+       
+
 
         conn.execute(
             """
