@@ -60,7 +60,84 @@ async function loadNews() {
     }
 }
 
+function formatAIResponse(text) {
+    let html = text;
 
+    // Convert Markdown headings
+    html = html.replace(/^### (.*)$/gm, "<h4>$1</h4>");
+    html = html.replace(/^## (.*)$/gm, "<h3>$1</h3>");
+    html = html.replace(/^# (.*)$/gm, "<h2>$1</h2>");
+
+    // Convert bold text
+    html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+    // Convert blockquotes
+    html = html.replace(/^>\s?(.*)$/gm, '<blockquote>$1</blockquote>');
+
+    // Convert horizontal lines
+    html = html.replace(/^---$/gm, "<hr>");
+
+    // Convert Markdown tables
+    const lines = html.split("\n");
+    let result = [];
+    let inTable = false;
+
+    for (let i = 0; i < lines.length; i++) {
+        let line = lines[i].trim();
+
+        if (line.startsWith("|") && line.endsWith("|")) {
+
+            // Skip table separator row
+            if (/^\|[\s\-|:]+\|$/.test(line)) {
+                continue;
+            }
+
+            let cells = line
+                .split("|")
+                .slice(1, -1)
+                .map(cell => cell.trim());
+
+            if (!inTable) {
+                result.push("<table><thead><tr>");
+                cells.forEach(cell => {
+                    result.push(`<th>${cell}</th>`);
+                });
+                result.push("</tr></thead><tbody>");
+                inTable = true;
+            } else {
+                result.push("<tr>");
+                cells.forEach(cell => {
+                    result.push(`<td>${cell}</td>`);
+                });
+                result.push("</tr>");
+            }
+
+        } else {
+            if (inTable) {
+                result.push("</tbody></table>");
+                inTable = false;
+            }
+
+            result.push(line);
+        }
+    }
+
+    if (inTable) {
+        result.push("</tbody></table>");
+    }
+
+    html = result.join("\n");
+
+    // Convert bullet points
+    html = html.replace(/^\s*[-*]\s+(.*)$/gm, "<li>$1</li>");
+
+   // Clean up excessive empty lines
+    html = html.replace(/\n\s*\n+/g, "\n");
+
+// Convert remaining line breaks
+    html = html.replace(/\n/g, "<br>");
+    return html;
+}
 async function simplifyNews(text, button) {
     try {
         const response = await fetch(
@@ -75,9 +152,9 @@ async function simplifyNews(text, button) {
 
         button.insertAdjacentHTML(
             "afterend",
-            `<div class="simplified-news">
+    `       <div class="simplified-news">
                 <strong>AI Simplification:</strong>
-                <p>${data.simplified}</p>
+                <div class="ai-content">${formatAIResponse(data.simplified)}</div>
             </div>`
         );
 
