@@ -1,0 +1,16 @@
+[project]
+name = "financial-news-simplifier"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi[standard]",
+    "requests",
+    "python-dotenv",
+    "groq"
+]
+
+[tool.fastapi]
+entrypoint = "backend.main:app"
+
+[tool.setuptools]
+packages = ["backend"]

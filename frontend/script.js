@@ -9,7 +9,7 @@ async function loadNews() {
     newsContainer.innerHTML = "<p>🔄 Loading latest financial news...</p>";
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/news");
+        const response = await fetch("https://financial-news-simplifier.fastapicloud.dev/news");
         if (!response.ok) {
             throw new Error("Unable to fetch financial news.");
         }
@@ -64,7 +64,7 @@ async function loadNews() {
 async function simplifyNews(text, button) {
     try {
         const response = await fetch(
-            "http://127.0.0.1:8000/simplify?article_text=" +
+            "https://financial-news-simplifier.fastapicloud.dev/simplify?article_text=" +
             encodeURIComponent(text),
             {
                 method: "POST"
