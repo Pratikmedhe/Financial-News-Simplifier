@@ -83,10 +83,14 @@ function formatAIResponse(text) {
     let inTable = false;
 
     for (let i = 0; i < lines.length; i++) {
+
         let line = lines[i].trim();
 
-        if (line.startsWith("|") && line.endsWith("|")) {
+        if (!line) {
+        continue;
+        }
 
+        if (line.startsWith("|") && line.endsWith("|")) {
             // Skip table separator row
             if (/^\|[\s\-|:]+\|$/.test(line)) {
                 continue;
