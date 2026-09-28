@@ -229,3 +229,24 @@ button:hover {
     left: 35px;
     opacity: 0.8;
 }
+
+.ai-content {
+    line-height: 1.5;
+}
+
+.ai-content br {
+    display: none;
+}
+
+.ai-content table {
+    margin: 10px 0;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ai-content th,
+.ai-content td {
+    padding: 10px;
+    border: 1px solid #d6e0ea;
+    text-align: left;
+}

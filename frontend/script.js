@@ -140,6 +140,8 @@ function formatAIResponse(text) {
 
 // Convert remaining line breaks
     html = html.replace(/\n/g, "<br>");
+    html = html.replace(/(<br>\s*)+(<table>)/g, "<table>");
+    html = html.replace(/(<\/table>)(<br>\s*)+/g, "</table>");
     return html;
 }
 async function simplifyNews(text, button) {
