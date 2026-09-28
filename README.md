@@ -45,11 +45,10 @@ Financial-News-Simplifier/
 │   ├── style.css
 │   └── script.js
 │
-├── .env
 ├── .gitignore
 ├── pyproject.toml
 ├── README.md
-└── venv/
+└── requirements.txt
 
 API Endpoints
 Health Check
@@ -86,7 +85,15 @@ API keys are stored as environment variables and are not committed to GitHub.
 
 Deployment
 
+The frontend is deployed using Netlify.
+
+Live Website:
+https://financial-news-simplifier.netlify.app/
+
 The FastAPI backend is deployed using FastAPI Cloud.
+
+Backend API:
+https://financial-news-simplifier.fastapicloud.dev/
 
 Project Status
 
